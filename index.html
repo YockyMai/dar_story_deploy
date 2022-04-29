@@ -7,7 +7,10 @@
 
 		<title>Дар Строй</title>
 		<meta name="description" content="" />
-
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
+		/>
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -155,6 +158,9 @@
 		<div class="connection">
 			<h1>Оставьте заявку и узнайте</h1>
 			<p>о дополнительных выгодах лично для вас!</p>
+			<h2 class="response-info">
+				Ваша заявка принята, спасибо сотруднечество
+			</h2>
 			<div class="connection--inputs">
 				<div class="name-container">
 					<svg
@@ -170,7 +176,12 @@
 						/>
 					</svg>
 
-					<input type="text" placeholder="Введите имя" class="name" />
+					<input
+						type="text"
+						placeholder="Введите имя"
+						class="name"
+						id="fullname"
+					/>
 				</div>
 				<div class="number-container">
 					<svg
@@ -195,6 +206,7 @@
 					</svg>
 					<input
 						type="number"
+						id="number"
 						placeholder="+7 (___) ___ __ __"
 						class="number"
 					/>
@@ -214,12 +226,14 @@
 					</svg>
 					<input
 						type="email"
+						id="email"
 						placeholder="Введите email"
 						class="email"
 					/>
 				</div>
 			</div>
-			<button class="btn">отправить</button>
+			<button class="btn" id="sendBtn">отправить</button>
+
 			<div class="border-gradient"></div>
 			<img
 				class="connection-house-img"
@@ -440,9 +454,85 @@
 			</div>
 		</div>
 	</section>
+	<section class="slider">
+		<h1>наши <b>проекты</b></h1>
+		<div class="swiper">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+					<div>
+						<img src="./images/dist/slider1.jpg" alt="" />
+					</div>
+					<p>Двухэтажный дом, 230 м²</p>
+					<h3>17 000 ₽/м²</h3>
+					<a href="#">Узнать подробнее</a>
+				</div>
+				<div class="swiper-slide">
+					<div>
+						<img src="./images/dist/slider2.jpg" alt="" />
+					</div>
+					<p>Двухэтажный дом, 230 м²</p>
+					<h3>17 000 ₽/м²</h3>
+					<a href="#">Узнать подробнее</a>
+				</div>
+				<div class="swiper-slide">
+					<div>
+						<img src="./images/dist/slider3.jpg" alt="" />
+					</div>
+					<p>Двухэтажный дом, 230 м²</p>
+					<h3>17 000 ₽/м²</h3>
+					<a href="#">Узнать подробнее</a>
+				</div>
+			</div>
+
+			<div class="swiper-pagination"></div>
+
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
+	</section>
 </div>
 
 	<script src="js/app.min.js"></script>
+	<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+		let result = document.getElementsByClassName('response-info')[0];
+		console.log(result);
+		document.getElementById('sendBtn').addEventListener('click', async (e) => {
+			let number = document.getElementById('number').value;
+			let fullname = document.getElementById('fullname').value;
+			let email = document.getElementById('email').value;
 
+			if (number.length == 0 || fullname.length == 0 || email.length == 0){
+				alert('Заполните все поля!')
+			}
+			else{
+				axios.post('https://darstrory-api.herokuapp.com/create', {
+				fullname,
+				number,
+				email,
+				}).then((response) => {
+					
+
+					if (response.data.code == "0") alert(response.data.message);
+					else{
+						result.classList.add("response-info--active");
+						setTimeout(()=>{
+							result.classList.remove("response-info--active");
+						},3000)	
+						number = "";
+						fullname = "";
+						email = "";
+					}
+				}).then((error)=>{
+					console.log(error);
+					
+				});
+
+				
+			}
+			
+	});
+	</script>
 </body>
 </html>
