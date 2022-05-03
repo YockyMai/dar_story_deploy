@@ -204,11 +204,13 @@
 							fill="#E8E8E8"
 						/>
 					</svg>
+
 					<input
-						type="number"
 						id="number"
+						type="tel"
+						data-tel-input
 						placeholder="+7 (___) ___ __ __"
-						class="number"
+						maxlength="18"
 					/>
 				</div>
 				<div class="email-container">
@@ -492,47 +494,11 @@
 	</section>
 </div>
 
-	<script src="js/app.min.js"></script>
 	<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="js/app.min.js"></script>
 	<script>
-		let result = document.getElementsByClassName('response-info')[0];
-		console.log(result);
-		document.getElementById('sendBtn').addEventListener('click', async (e) => {
-			let number = document.getElementById('number').value;
-			let fullname = document.getElementById('fullname').value;
-			let email = document.getElementById('email').value;
-
-			if (number.length == 0 || fullname.length == 0 || email.length == 0){
-				alert('Заполните все поля!')
-			}
-			else{
-				axios.post('https://darstrory-api.herokuapp.com/create', {
-				fullname,
-				number,
-				email,
-				}).then((response) => {
-					
-
-					if (response.data.code == "0") alert(response.data.message);
-					else{
-						result.classList.add("response-info--active");
-						setTimeout(()=>{
-							result.classList.remove("response-info--active");
-						},3000)	
-						number = "";
-						fullname = "";
-						email = "";
-					}
-				}).then((error)=>{
-					console.log(error);
-					
-				});
-
-				
-			}
-			
-	});
+		
 	</script>
 </body>
 </html>
